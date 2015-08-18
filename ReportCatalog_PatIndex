@@ -1,0 +1,9 @@
+
+select sc.Name [Subscription], c.Name [Report], substring(ExtensionSettings,
+(patindex('%<Value>%', ExtensionSettings) + len('<Value>')), (patindex('%</Value>%', ExtensionSettings) - patindex('%<Value>%', ExtensionSettings) - len('<Value>'))) EmailList
+from Subscriptions s
+join reportSchedule rs on rs.SubscriptionID = s.SubscriptionID
+join Schedule sc on sc.scheduleId = rs.ScheduleId
+join Catalog c on c.ItemId = s.Report_OID
+where sc.Name <> 'Automation Schedule'
+order by sc.Name, c.Name
